@@ -1,7 +1,12 @@
 FROM golang:1.3-onbuild
-MAINTAINER Klaus Post <klauspost@gmail.com>
+MAINTAINER Ael Gain <ael@habx.fr>
 
 EXPOSE 5000
 
-CMD ["app", "-db=/data/geodb.mmdb"]
-VOLUME /data/geodb.mmdb
+RUN wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.tar.gz && \
+    tar xvzf GeoLite2-City.tar.gz && \
+    find . -name "*.mmdb" -exec mv {} ./geodb.mmdb \;
+
+RUN go get github.com/klauspost/geoip-service
+
+CMD ["geoip-service", "-db=./geodb.mmdb"]
