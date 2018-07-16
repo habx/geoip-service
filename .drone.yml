@@ -42,7 +42,10 @@ pipeline:
     image: aelg/drone-service-duplicator
     kubernetes_server: https://api.paris.k8s.habx.fr
     kubernetes_token: ${KUBERNETES_TOKEN}
+    pull: true
     secrets:
+      - source: slack_incoming_webhook
+        target: slack_incoming_webhook
       - source: kubernetes_token_paris
         target: kubernetes_token
     environment:
@@ -51,6 +54,7 @@ pipeline:
       - SERVICE_LABEL=${DRONE_REPO_NAME}
       - MATCH_ON_KEY=repo
       - HOST=${DRONE_COMMIT_BRANCH##feature/}.${DRONE_REPO_NAME}.habx-dev.fr
+      - GITHUB_TO_SLACK_ID_JSON=https://s3.eu-west-3.amazonaws.com/habx-kubernetes-objects/github_to_slack.js
     when:
       branch: [ feature/* ]
 
