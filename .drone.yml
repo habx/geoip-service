@@ -9,7 +9,7 @@ pipeline:
     image: plugins/ecr
     ecr_access_key: $${AWS_ACCESS_KEY_ID}
     ecr_secret_key: $${AWS_SECRET_ACCESS_KEY}
-    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/habx-${DRONE_REPO_NAME}
+    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/service-geoip
     region: eu-west-1
     groupe: push
     dockerfile: Dockerfile
@@ -45,7 +45,7 @@ pipeline:
     image: plugins/ecr
     ecr_access_key: $${AWS_ACCESS_KEY_ID}
     ecr_secret_key: $${AWS_SECRET_ACCESS_KEY}
-    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/habx-${DRONE_REPO_NAME}
+    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/service-geoip
     region: eu-west-1
     groupe: push
     dockerfile: Dockerfile
@@ -103,7 +103,7 @@ pipeline:
     namespace: ${DRONE_COMMIT_BRANCH##feature/}
     deployment: ${DRONE_REPO_NAME}
     container: ${DRONE_REPO_NAME}
-    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/habx-${DRONE_REPO_NAME}
+    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/service-geoip
     tag: ${DRONE_COMMIT_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:7}
     secrets:
       - source: slack_incoming_webhook
@@ -121,7 +121,7 @@ pipeline:
     namespace: release
     deployment: ${DRONE_REPO_NAME}
     container: ${DRONE_REPO_NAME}
-    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/habx-${DRONE_REPO_NAME}
+    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/service-geoip
     tag: ${DRONE_COMMIT_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:7}
     secrets:
       - source: kubernetes_token_paris
@@ -139,7 +139,7 @@ pipeline:
     namespace: staging
     deployment: ${DRONE_REPO_NAME}
     container: ${DRONE_REPO_NAME}
-    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/habx-${DRONE_REPO_NAME}
+    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/service-geoip
     tag: ${DRONE_TAG}
     secrets:
       - source: kubernetes_token_paris
