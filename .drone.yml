@@ -92,7 +92,7 @@ pipeline:
       - MATCH_ON_KEY=repo
       - HOST=${DRONE_COMMIT_BRANCH##feature/}.${DRONE_REPO_NAME}.habx-dev.fr
       - GITHUB_TO_SLACK_ID_JSON=https://s3.eu-west-3.amazonaws.com/habx-kubernetes-objects/github_to_slack.js
-      - ADDITIONAL_SERVICES=""
+      - ADDITIONAL_SERVICES=
     when:
       branch: [ feature/* ]
 
