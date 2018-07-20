@@ -11,6 +11,7 @@ pipeline:
     ecr_secret_key: $${AWS_SECRET_ACCESS_KEY}
     repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/habx-${DRONE_REPO_NAME}
     region: eu-west-1
+    groupe: push
     dockerfile: Dockerfile
     build_args_from_env:
       - NPM_TOKEN
@@ -28,6 +29,7 @@ pipeline:
     ecr_secret_key: $${AWS_SECRET_ACCESS_KEY}
     repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/${DRONE_REPO_NAME}
     region: eu-west-1
+    groupe: push
     dockerfile: Dockerfile
     build_args_from_env:
       - NPM_TOKEN
@@ -45,6 +47,7 @@ pipeline:
     ecr_secret_key: $${AWS_SECRET_ACCESS_KEY}
     repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/habx-${DRONE_REPO_NAME}
     region: eu-west-1
+    groupe: push
     dockerfile: Dockerfile
     tags:
       - ${DRONE_TAG}
@@ -61,6 +64,7 @@ pipeline:
     ecr_secret_key: $${AWS_SECRET_ACCESS_KEY}
     repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/${DRONE_REPO_NAME}
     region: eu-west-1
+    groupe: push
     dockerfile: Dockerfile
     tags:
       - ${DRONE_TAG}
@@ -88,6 +92,7 @@ pipeline:
       - MATCH_ON_KEY=repo
       - HOST=${DRONE_COMMIT_BRANCH##feature/}.${DRONE_REPO_NAME}.habx-dev.fr
       - GITHUB_TO_SLACK_ID_JSON=https://s3.eu-west-3.amazonaws.com/habx-kubernetes-objects/github_to_slack.js
+      - ADDITIONAL_SERVICES=""
     when:
       branch: [ feature/* ]
 
