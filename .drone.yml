@@ -115,3 +115,60 @@ pipeline:
         target: slack_incoming_webhook
     when:
       event: tag
+
+  # EKS DEPLOYMENT
+  duplicate-service-eks:
+    image: aelg/drone-service-duplicator
+    pull: true
+    secrets:
+      - source: slack_incoming_webhook
+        target: slack_incoming_webhook
+      - source: kubernetes_token_eks_dev
+        target: PLUGIN_KUBERNETES_TOKEN
+      - source: kubernetes_api_endpoint_eks_dev
+        target: PLUGIN_KUBERNETES_SERVER
+    environment:
+      - SOURCE_NAMESPACE=dev
+      - TARGET_NAMESPACE=${DRONE_COMMIT_BRANCH##feature/}
+      - SERVICE_LABEL=${DRONE_REPO_NAME}
+      - MATCH_ON_KEY=repo
+      - HOST=${DRONE_COMMIT_BRANCH##feature/}.${DRONE_REPO_NAME}.habx-dev.fr
+      - GITHUB_TO_SLACK_ID_JSON=https://s3.eu-west-3.amazonaws.com/habx-kubernetes-objects/github_to_slack.js
+      - ADDITIONAL_SERVICES=
+    when:
+      branch: [ feature/* ]
+
+  deploy-to-dev-eks:
+    image: aelg/drone-kubernetes
+    namespace: ${DRONE_COMMIT_BRANCH##feature/}
+    deployment: ${DRONE_REPO_NAME}
+    container: ${DRONE_REPO_NAME}
+    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/${DRONE_REPO_NAME}
+    tag: ${DRONE_COMMIT_BRANCH/\//-}-${DRONE_COMMIT_SHA:0:7}
+    secrets:
+      - source: slack_incoming_webhook
+        target: slack_incoming_webhook
+      - source: kubernetes_token_eks_dev
+        target: PLUGIN_KUBERNETES_TOKEN
+      - source: kubernetes_api_endpoint_eks_dev
+        target: PLUGIN_KUBERNETES_SERVER
+    when:
+      event: push
+      branch: [dev, feature/*]
+
+  deploy-to-staging-on-tag-eks:
+    image: aelg/drone-kubernetes
+    namespace: staging
+    deployment: ${DRONE_REPO_NAME}
+    container: ${DRONE_REPO_NAME}
+    repo: 724009402066.dkr.ecr.eu-west-1.amazonaws.com/${DRONE_REPO_NAME}
+    tag: ${DRONE_TAG}
+    secrets:
+      - source: slack_incoming_webhook
+        target: slack_incoming_webhook
+      - source: kubernetes_token_eks_dev
+        target: PLUGIN_KUBERNETES_TOKEN
+      - source: kubernetes_api_endpoint_eks_dev
+        target: PLUGIN_KUBERNETES_SERVER
+    when:
+      event: tag
