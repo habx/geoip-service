@@ -3,36 +3,8 @@ version: 2.1
 workflows:
   deploy-to-kubernetes:
     jobs:
-      - fetch-node-modules:
-          context: default_env_vars
-          filters:
-            tags:
-              only: /^v.*/
-      - test-and-lint:
-          context: default_env_vars
-          requires:
-          - build
-          filters:
-            tags:
-              only: /^v.*/
-      - build:
-          context: default_env_vars
-          requires:
-          - get-build-infos
-          filters:
-            tags:
-              only: /^v.*/
-      - get-build-infos:
-          context: default_env_vars
-          requires:
-          - fetch-node-modules
-          filters:
-            tags:
-              only: /^v.*/
       - build-container:
           context: default_env_vars
-          requires:
-          - build
           filters:
             tags:
               only: /^v.*/
